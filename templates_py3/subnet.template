@@ -1,0 +1,24 @@
+resource "aws_subnet" "{{ subnet_name | safe }}" {
+  vpc_id                          = "{{ subnet_vpc_id | safe }}"
+  cidr_block                      = "{{ subnet_cidr_block | safe }}"
+  {% if subnet_az | length >= 1 -%}
+  availability_zone               = "{{ subnet_az | safe }}"
+  {%- endif %}
+  {% if subnet_az_id | length >= 1 -%}
+  availability_zone_id            = "{{ subnet_az_id | safe }}"
+  {%- endif %}
+  map_public_ip_on_launch         = "{{ subnet_map_pub_ip | safe }}"
+  assign_ipv6_address_on_creation = "{{ subnet_assign_ipv6 | safe }}"
+  {% if subnet_ipv6_cidr is defined -%}
+  ipv6_cidr_block                 = "{{ subnet_ipv6_cidr | safe }}"
+  {%- endif %}
+  {% if subnet_tags.Team is defined -%}
+  tags = {
+    {% for tag_name, tag_value in subnet_tags.items() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

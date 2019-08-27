@@ -1,0 +1,12 @@
+resource "aws_security_group" "{{ sg_name }}" {
+  name        = "{{ sg_name | safe }}"
+  description = "{{ sg_description | safe}}"
+  vpc_id      = "{{ sg_vpc_id | safe }}"
+  tags        = {
+    {% for tag_name, tag_value in sg_tags.iteritems() -%}
+    "{{ tag_name | safe }}" = "{{ tag_value | safe }}",
+    {% endfor %}
+  }
+}
+
+

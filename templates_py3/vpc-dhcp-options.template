@@ -1,0 +1,26 @@
+resource "aws_vpc_dhcp_options" "{{ vpc_dhcp_opts_name | safe }}" {
+  {% if vpc_dhcp_opts_domain is defined -%}
+  domain_name          = "{{ vpc_dhcp_opts_domain | safe }}"
+  {%- endif %}
+  {% if vpc_dhcp_opts_dns_servers|length >= 1 -%}
+  domain_name_servers  = {{ vpc_dhcp_opts_dns_servers | tojson }}
+  {%- endif %}
+  {% if vpc_dhcp_opts_ntp_servers|length >= 1 -%}
+  ntp_servers          = {{ vpc_dhcp_opts_ntp_servers | tojson }}
+  {%- endif %}
+  {% if vpc_dhcp_opts_netbios_ns|length >= 1 -%}
+  netbios_name_servers = {{ vpc_dhcp_opts_netbios_ns | tojson }}
+  {%- endif %}
+  {% if vpc_dhcp_opts_netbios_node_type is defined -%}
+  netbios_node_type    = "{{ vpc_dhcp_opts_netbios_node_type | safe }}"
+  {%- endif %}
+  {% if vpc_dhcp_opts_tags.Team is defined -%}
+  tags = {
+    {% for tag_name, tag_value in vpc_dhcp_opts_tags.items() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

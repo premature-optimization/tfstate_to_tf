@@ -1,0 +1,36 @@
+resource "aws_route" "{{ route_name | safe }}" {
+  route_table_id = "{{ route_table_id | safe }}"
+  {% if route_dest_ip4_cidr|length >= 1 -%}
+  destination_cidr_block    = "{{ route_dest_ip4_cidr | safe }}"
+  {%- endif %}
+  {% if route_egress_gateway_id|length >= 1 -%}
+  egress_only_gateway_id    = "{{ route_egress_gateway_id | safe }}"
+  {%- endif %}
+  {% if route_gateway_id|length >= 1 -%}
+  gateway_id                = "{{ route_gateway_id | safe }}"
+  {%- endif %}
+  {% if route_instance_id|length >= 1 -%}
+  instance_id               = "{{ route_instance_id | safe }}"
+  {%- endif %}
+  {% if route_network_if_id|length >= 1 -%}
+  network_interface_id      = "{{ route_network_if_id | safe }}"
+  {%- endif %}
+  {% if route_nat_gw_id|length >= 1 -%}
+  nat_gateway_id            = "{{ route_nat_gw_id | safe }}"
+  {%- endif %}
+  {% if route_transit_gw_id|length >= 1 -%}
+  transit_gateway_id        = "{{ route_transit_gw_id | safe }}"
+  {%- endif %}
+  {% if route_vpc_peer_id|length >= 1 -%}
+  vpc_peering_connection_id = "{{ route_vpc_peer_id | safe }}"
+  {%- endif %}
+  {% if route_tags.Team is defined -%}
+  tags = {
+    {% for tag_name, tag_value in route_tags.iteritems() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

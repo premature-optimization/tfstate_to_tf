@@ -1,0 +1,31 @@
+resource "aws_vpc_endpoint" "{{ vpc_endpoint_name | safe }}" {
+  service_name          = "{{ vpc_endpoint_service_name | safe }}"
+  vpc_id                = "{{ vpc_endpoint_vpc_id | safe }}"
+  {% if vpc_endpoint_policy is defined -%}
+  policy                = {{ vpc_endpoint_policy | safe }}
+  {%- endif %}
+  {% if vpc_endpoint_private_dns is defined -%}
+  private_dns_enabled   = {{ vpc_endpoint_private_dns | safe }}
+  {%- endif %}
+  {% if vpc_endpoint_route_table_ids|length >= 2 -%}
+  route_table_ids       = {{ vpc_endpoint_route_table_ids | tojson }}
+  {%- endif %}
+  {% if vpc_endpoint_subnet_ids|length >= 2 -%}
+  subnet_ids            = {{ vpc_endpoint_subnet_ids | tojson }}
+  {%- endif %}
+  {% if vpc_endpoint_security_group_ids|length >= 2 -%}
+  security_group_ids    = {{ vpc_endpoint_security_group_ids | tojson }}
+  {%- endif %}
+  {% if vpc_endpoint_type is defined -%}
+  vpc_endpoint_type     = "{{ vpc_endpoint_type | safe }}"
+  {%- endif %}
+  {% if vpc_endpoint_tags|length  >= 1 -%}
+  tags = {
+    {% for tag_name, tag_value in vpc_endpoint_tags.iteritems() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

@@ -1,0 +1,11 @@
+resource "aws_security_group_rule" "{{ sg_name }}_{{ sg_rule_name }}" {
+  type            = "{{ sg_rule_type | safe }}"
+  from_port       = {{ sg_rule_from_port}}
+  to_port         = {{ sg_rule_to_port }}
+  protocol        = {{ sg_rule_protocol }}
+  cidr_blocks     = {{ sg_rule_cidrs }}
+  self            = {{ sg_rule_self }}
+  security_group_id = "${aws_security_group.{{ sg_name }}.id}"
+}
+
+

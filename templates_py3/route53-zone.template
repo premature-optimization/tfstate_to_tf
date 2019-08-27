@@ -1,0 +1,21 @@
+resource "aws_route53_zone" "{{ zone_resource_name }}" {
+  name              = "{{ zone_name }}"
+  comment           = "{{ zone_comment }}"
+  force_destroy     = "{{ zone_force_destroy }}"
+  delegation_set_id = "{{ zone_delegation_set_id | safe }}"
+  {% if zone_tags.Team is defined -%}
+  tags = {
+    {% for tag_name, tag_value in zone_tags.items() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+  {% if zone_vpcs.vpc_id is defined -%}
+  vpc {
+    vpc_id = "{{ zone_vpcs.vpc_id | safe }}"
+    vpc_region = "{{ zone_vpcs.vpc_region | safe }}"
+  }
+  {%- endif %}
+}
+
+

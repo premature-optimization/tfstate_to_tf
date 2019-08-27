@@ -1,0 +1,17 @@
+resource "aws_route53_record" "{{ record_name }}" {
+  zone_id = "${aws_route53_zone.{{ record_parent_zone | safe }}.id}"
+  name    = "{{ record_name | safe }}"
+  type    = "{{ record_type | safe }}"
+  {% if alias_dict.name is defined -%}
+  alias {
+    name    = "{{ alias_dict.name | safe }}"
+    zone_id = "{{ alias_dict.zone_id | safe}}"
+    evaluate_target_health = "{{ alias_dict.evaluate_target_health | safe }}"
+  }
+  {%- else -%}
+  ttl     = "{{ record_ttl | safe }}"
+  records = {{ record_values | safe }}
+  {%- endif %}
+}
+
+

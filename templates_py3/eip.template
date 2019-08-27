@@ -1,0 +1,26 @@
+resource "aws_eip" "{{ eip_name | safe }}" {
+  {% if eip_vpc | length >= 1 -%}
+  vpc                       = {{ eip_vpc | safe }}
+  {%- endif %}
+  {% if eip_instance | length >= 1 -%}
+  instance                  = "{{ eip_instance | safe }}"
+  {%- endif %}
+  {% if eip_network_interface | length >= 1 -%}
+  network_interface         = "{{ eip_network_interface | safe }}"
+  {%- endif %}
+  {% if eip_assoc_with_ip | length >= 1 -%}
+  associate_with_private_ip = "{{ eip_assoc_with_ip | safe }}"
+  {%- endif %}
+  {% if eip_public_ip4_pool | length >= 1 -%}
+  public_ipv4_pool          = "{{ eip_public_ip4_pool | safe }}"
+  {%- endif %}
+  {% if vpn_gateway_tags is defined -%}
+  tags = {
+    {% for tag_name, tag_value in vpn_gateway_tags.items() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

@@ -1,0 +1,6 @@
+resource "aws_vpc_dhcp_options_association" "{{ vpc_dhcp_opts_assoc_name | safe }}" {
+  vpc_id          = "{{ vpc_dhcp_opts_assoc_vpc_id | safe }}"
+  dhcp_options_id = "{{ vpc_dhcp_opts_assoc_dhcp_opts_id | safe }}"
+}
+
+

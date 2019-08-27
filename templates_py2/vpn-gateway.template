@@ -1,0 +1,20 @@
+resource "aws_vpn_gateway" "{{ vpn_gateway_name | safe }}" {
+  {% if vpn_gateway_vpc | length >= 1 -%}
+  vpc_id                = "{{ vpn_gateway_vpc | safe }}"
+  {%- endif %}
+  {% if vpn_gateway_az | length >= 1 -%}
+  availability_zone     = "{{ vpn_gateway_az | safe }}"
+  {%- endif %}
+  {% if vpn_gateway_asn | length >= 1 -%}
+  amazon_side_asn       = "{{ vpn_gateway_asn | safe }}"
+  {%- endif %}
+  {% if vpn_gateway_tags is defined -%}
+  tags = {
+    {% for tag_name, tag_value in vpn_gateway_tags.iteritems() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

@@ -1,0 +1,15 @@
+resource "aws_vpc" "{{ vpc_name | safe }}" {
+  cidr_block           = "{{ vpc_cidr_block | safe }}"
+  instance_tenancy     = "{{ vpc_instance_tenancy | safe }}"
+  enable_dns_hostnames = "{{ vpc_dns_hostnames | safe }}"
+  enable_dns_support   = "{{ vpc_dns_support | safe }}"
+  {% if vpc_tags.Team is defined -%}
+  tags = {
+    {% for tag_name, tag_value in vpc_tags.items() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

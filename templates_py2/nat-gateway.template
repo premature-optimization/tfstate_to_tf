@@ -1,0 +1,13 @@
+resource "aws_nat_gateway" "{{ nat_gateway_name | safe }}" {
+  allocation_id = "{{ nat_gateway_allocation_id | safe }}"
+  subnet_id     = "{{ nat_gateway_subnet_id | safe }}"
+  {% if nat_gateway_tags is defined -%}
+  tags = {
+    {% for tag_name, tag_value in nat_gateway_tags.iteritems() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {%- endif %}
+}
+
+

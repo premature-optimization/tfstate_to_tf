@@ -1,0 +1,26 @@
+resource "aws_route_table" "{{ route_table_name | safe }}" {
+  vpc_id          = "{{ route_table_vpc_id | safe }}"
+  {% if route_table_propagating_vgws|length >= 1 -%}
+  propagating_vgws = {{ route_table_propagating_vgws | tojson }}
+  {% endif -%}
+  {% if route_table_all_routes is defined -%}
+  {% for route_id, route_dicts in route_table_all_routes.iteritems() -%}
+  route {
+    {% for route_param, rp_value in route_dicts.iteritems() -%}
+    {% if rp_value|length >= 1 -%}
+    {{ route_param | safe }} = "{{ rp_value | safe }}"
+    {% endif -%}
+    {% endfor -%}
+  }
+  {% endfor -%}
+  {% endif -%}
+  {% if route_table_tags|length >= 1 -%}
+  tags = {
+    {% for tag_name, tag_value in route_table_tags.iteritems() -%}
+    {{ tag_name | safe }} = "{{ tag_value | safe }}"
+    {% endfor -%}
+  }
+  {% endif -%}
+}
+
+

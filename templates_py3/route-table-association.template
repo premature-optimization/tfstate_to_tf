@@ -1,0 +1,6 @@
+resource "aws_route_table_association" "{{ route_table_assoc_name | safe }}" {
+  subnet_id      = "{{ route_table_assoc_subnet_id | safe }}"
+  route_table_id = "{{ route_table_assoc_route_table_id | safe }}"
+}
+
+
